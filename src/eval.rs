@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use abs::Expr;
-use abs::Expr::{Id, LitInt, Neg, Plus, Minus};
+use abs::Expr::{Id, LitInt, Neg, Plus, Minus, Divide, Multiply};
 use abs::Stm;
 use abs::Stm::{Vardef, Assign};
 
@@ -58,6 +58,8 @@ impl Eval {
             Neg(box e) => - self.eval(e),
             Plus(box e1, box e2) => self.eval(e1) + self.eval(e2),
             Minus(box e1, box e2) => self.eval(e1) - self.eval(e2),
+            Divide(box e1, box e2) => self.eval(e1) / self.eval(e2),
+            Multiply(box e1, box e2) => self.eval(e1) * self.eval(e2),
         }
     }
 

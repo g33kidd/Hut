@@ -13,5 +13,7 @@ pub enum Expr {
     LitInt(int),
     Neg(Box<Expr>),
     Plus(Box<Expr>, Box<Expr>),
-    Minus(Box<Expr>, Box<Expr>)
+    Minus(Box<Expr>, Box<Expr>),
+    Divide(Box<Expr>, Box<Expr>),
+    Multiply(Box<Expr>, Box<Expr>),
 }

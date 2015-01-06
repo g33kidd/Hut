@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use regex::{Regex, Captures};
 
-use abs::Expr::{self, Id, LitInt, Neg, Plus, Minus};
+use abs::Expr::{self, Id, LitInt, Neg, Plus, Minus, Divide, Multiply};
 use abs::Stm::{self, Vardef, Assign};
 use abs::Type;
 
@@ -27,7 +27,7 @@ impl Parser {
         let expr = r"(.*)";
 
         let parse_patterns = vec![
-            ("Vardef", vec![id, r" :: ", typ]),
+            ("Vardef", vec![id, r"\s", typ]),
             ("Assign", vec![id, r" = ", expr]),
 
             ("Type", vec![typ]),
@@ -35,6 +35,8 @@ impl Parser {
             ("Id", vec![id]),
             ("LitInt", vec![litint]),
             ("Plus", vec![expr, r" \+ ", expr]),
+            ("Divide", vec![expr, r" / ", expr]),
+            ("Multiply", vec![expr, r" \* ", expr]),
             ("Minus", vec![expr, r" - ", expr]),
             ("Neg", vec![r"-", expr]),
         ];
@@ -99,6 +101,8 @@ impl Parser {
                     "Neg" => self.neg(c),
                     "Plus" => self.plus(c),
                     "Minus" => self.minus(c),
+                    "Divide" => self.divide(c),
+                    "Multiply" => self.multiply(c),
                     _ => panic!("Bad match: {}", rule.name)
                 };
             }
@@ -131,5 +135,17 @@ impl Parser {
         let e1 = self.parse_expr(cap.at(1).unwrap());
         let e2 = self.parse_expr(cap.at(2).unwrap());
         return Minus(box e1, box e2);
+    }
+
+    fn divide(&self, cap: Captures) -> Expr {
+        let e1 = self.parse_expr(cap.at(1).unwrap());
+        let e2 = self.parse_expr(cap.at(2).unwrap());
+        return Divide(box e1, box e2);
+    }
+
+    fn multiply(&self, cap: Captures) -> Expr {
+        let e1 = self.parse_expr(cap.at(1).unwrap());
+        let e2 = self.parse_expr(cap.at(2).unwrap());
+        return Multiply(box e1, box e2);
     }
 }

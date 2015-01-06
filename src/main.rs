@@ -9,9 +9,11 @@ mod abs;
 mod parser;
 mod eval;
 
+// JUST MAIN
 fn main() {
 
     let args = std::os::args();
+    
     if args.len() < 2 {
         panic!("Please provide a file");
     }
@@ -32,11 +34,13 @@ fn main() {
     e.print_env();
 }
 
+// simple preprocessor splitting up all the lines of code.
 fn preprocess<'a>(s: &'a String) -> Vec<Line> {
     let mut res: Vec<Line> = vec![];
     for line in s.as_slice().lines_any() {
         match line {
-            "" => {}
+            "//" => {} // Discard any line starting with "//"
+            "" => {} // Discard Empty Lines.
             _ => res.push(Line{content: line})
         }
     }
