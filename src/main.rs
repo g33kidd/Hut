@@ -40,7 +40,6 @@ fn preprocess<'a>(s: &'a String) -> Vec<Line> {
     let mut res: Vec<Line> = vec![];
     for line in s.as_slice().lines_any() {
         match line {
-            r"^#.*$" => {}
             "" => {} // Discard Empty Lines.
             _ => res.push(Line{content: line})
         }

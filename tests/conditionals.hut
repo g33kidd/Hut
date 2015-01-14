@@ -1,0 +1,9 @@
+username Str
+username = "g33kidd"
+
+if username == "g33kidd" {
+  return username
+}
+
+if username == "g33kidd"
+  return username
